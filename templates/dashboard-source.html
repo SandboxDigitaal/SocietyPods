@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Society Pods - Trust-Based Carpooling for Kids</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "inverse-primary": "#c3c0ff",
+            "background": "#f7f9fb",
+            "surface-container-low": "#f2f4f6",
+            "on-error": "#ffffff",
+            "surface-dim": "#d8dadc",
+            "surface-container": "#eceef0",
+            "surface-tint": "#4d44e3",
+            "on-primary-container": "#dad7ff",
+            "tertiary-fixed": "#ffddb8",
+            "tertiary-fixed-dim": "#ffb95f",
+            "on-primary": "#ffffff",
+            "primary-container": "#4f46e5",
+            "surface-container-high": "#e6e8ea",
+            "primary": "#3525cd",
+            "primary-fixed-dim": "#c3c0ff",
+            "tertiary-container": "#885500",
+            "surface": "#f7f9fb",
+            "outline": "#777587",
+            "on-secondary": "#ffffff",
+            "on-secondary-fixed": "#002113",
+            "on-tertiary-fixed-variant": "#653e00",
+            "on-tertiary": "#ffffff",
+            "surface-variant": "#e0e3e5",
+            "error-container": "#ffdad6",
+            "on-tertiary-container": "#ffd4a4",
+            "inverse-on-surface": "#eff1f3",
+            "outline-variant": "#c7c4d8",
+            "on-primary-fixed-variant": "#3323cc",
+            "primary-fixed": "#e2dfff",
+            "on-primary-fixed": "#0f0069",
+            "secondary-fixed-dim": "#4edea3",
+            "on-surface": "#191c1e",
+            "surface-container-highest": "#e0e3e5",
+            "inverse-surface": "#2d3133",
+            "surface-container-lowest": "#ffffff",
+            "secondary-container": "#6cf8bb",
+            "on-secondary-fixed-variant": "#005236",
+            "surface-bright": "#f7f9fb",
+            "secondary": "#006c49",
+            "tertiary": "#684000",
+            "on-secondary-container": "#00714d",
+            "error": "#ba1a1a",
+            "on-background": "#191c1e"
+          },
+          fontFamily: {
+            sans: ["Plus Jakarta Sans", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+<style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    .pulse-urgent {
+      box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+      animation: pulse-border 1.8s infinite;
+    }
+    @keyframes pulse-border {
+      0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6); }
+      70% { box-shadow: 0 0 0 9px rgba(239, 68, 68, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+    }
+    /* Custom scrollbar */
+    main::-webkit-scrollbar { width: 4px; }
+    main::-webkit-scrollbar-thumb { background: #d8dadc; border-radius: 9999px; }
+  </style>
+</head>
+<body class="bg-[#2d3133] text-[#191c1e] h-full flex justify-center items-center p-0 md:py-4">
+<!-- Mobile Frame Container -->
+<div class="w-full max-w-md h-full md:h-[844px] bg-[#f7f9fb] md:rounded-[32px] shadow-2xl flex flex-col overflow-hidden relative border border-[#e0e3e5]">
+<!-- Top Header Bar with Trust Status & Sandbox Mode Switcher -->
+<header class="bg-white px-4 pt-3 pb-2.5 border-b border-[#e0e3e5] z-30 shrink-0 shadow-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<div class="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-black text-sm shadow-md">
+            SP
+          </div>
+<div>
+<div class="flex items-center gap-1.5">
+<h1 class="text-sm font-extrabold text-[#191c1e] tracking-tight">Society Pods</h1>
+<span class="text-[10px] px-1.5 py-0.2 bg-slate-100 text-slate-600 rounded font-medium border border-slate-200">Prestige</span>
+</div>
+<p class="text-[11px] text-[#777587] flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">location_on</span>
+<span id="header-address-label">Prestige Shantiniketan • Tower 7, Flat 1402</span>
+</p>
+</div>
+</div>
+<!-- Quick SOS Header Shortcut -->
+<div class="flex items-center gap-1.5">
+<button class="bg-red-600 hover:bg-red-700 text-white text-[11px] font-bold px-2.5 py-1.5 rounded-lg flex items-center gap-1 shadow-sm transition-all active:scale-95" id="quick-sos-header-btn">
+<span class="material-symbols-outlined text-xs">emergency</span> SOS
+          </button>
+</div>
+</div>
+<!-- Trust Badge & Sandbox Toggle Subheader -->
+<div class="mt-2.5 pt-2 border-t border-[#f2f4f6] flex items-center justify-between gap-2">
+<!-- Live Trust Badge -->
+<div id="trust-badge-container">
+<!-- Rendered dynamically: Verified emerald badge OR Pending amber badge -->
+</div>
+<!-- Simulator State Toggle Pill Button -->
+<button class="text-[11px] font-semibold px-2.5 py-1 rounded-full border border-indigo-200 bg-indigo-50/70 text-indigo-700 hover:bg-indigo-100 transition-colors flex items-center gap-1" id="toggle-sandbox-btn" title="Toggle between Verified and Pending Sandbox state">
+<span class="material-symbols-outlined text-xs">swap_horiz</span>
+<span id="toggle-sandbox-text">Switch to Sandbox</span>
+</button>
+</div>
+</header>
+<!-- App Main Scrollable Content Area -->
+<main class="flex-1 overflow-y-auto relative flex flex-col p-4 gap-4 pb-24" id="app-content"><div class="hidden transition-all duration-300 bg-emerald-600 text-white text-xs font-bold px-3 py-2.5 rounded-xl shadow-lg flex items-center justify-between gap-2 z-30" id="toast-notification"><div class="flex items-center gap-2"><span class="material-symbols-outlined text-base">check_circle</span><span id="toast-message">🎉 Pod Created! Aarav &amp; Diya registered as founding members</span></div><button class="text-white/80 hover:text-white" onclick="document.getElementById('toast-notification').classList.add('hidden')" type="button"><span class="material-symbols-outlined text-sm font-bold">close</span></button></div>
+<!-- PENDING SANDBOX BANNER (Visible only in Pending State) -->
+<div class="hidden bg-amber-50 border border-amber-300 rounded-2xl p-3.5 shadow-sm text-amber-900" id="pending-sandbox-banner">
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-amber-600 text-xl shrink-0 mt-0.5">warning</span>
+<div class="flex-1 text-xs">
+<div class="flex items-center justify-between">
+<span class="font-bold text-amber-900 text-xs">Pending Neighbor Vouch (Sandbox)</span>
+<span class="text-[10px] bg-amber-200 text-amber-900 font-semibold px-1.5 py-0.5 rounded">View Only</span>
+</div>
+<p class="text-amber-800 text-[11px] mt-1 leading-snug">
+              You can browse society pods, but you cannot join, create, or claim SOS actions until an existing neighbor vouches for you.
+            </p>
+<div class="mt-2.5 flex items-center gap-2">
+<button class="text-[11px] font-bold bg-amber-700 hover:bg-amber-800 text-white px-3 py-1 rounded-lg transition-colors flex items-center gap-1" id="open-vouch-qr-trigger">
+<span class="material-symbols-outlined text-xs">qr_code_2</span> Show Vouch QR
+              </button>
+<button class="text-[11px] font-bold bg-white border border-amber-400 text-amber-900 hover:bg-amber-100 px-2.5 py-1 rounded-lg transition-colors" id="quick-vouch-me-btn">
+                Instant Vouch (Demo)
+              </button>
+</div>
+</div>
+</div>
+</div>
+<!-- SCREEN 4: REAL-TIME EMERGENCY SOS & SWAP BROADCAST PANEL -->
+<section class="flex flex-col gap-3" id="sos-panel-section">
+<!-- Injected SOS Alert Card (Pulsing Urgent Card) -->
+<div id="active-sos-container"></div>
+</section>
+<!-- CHILDREN MANAGEMENT SUBSECTION (Screen 2: Verified State Feature) -->
+<section class="bg-white rounded-2xl p-3.5 border border-[#e0e3e5] shadow-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-700 flex items-center justify-center font-bold text-xs">
+<span class="material-symbols-outlined text-sm">child_care</span>
+</div>
+<div>
+<h2 class="text-xs font-bold text-[#191c1e] uppercase tracking-wide">Registered Children</h2>
+<p class="text-[10px] text-[#777587]">Verified under Tower 7, Flat 1402</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-[11px] font-bold bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded-full" id="children-count-badge">
+              2 Kids Registered
+            </span>
+<button class="text-[11px] font-bold bg-indigo-600 hover:bg-indigo-700 text-white px-2 py-1 rounded-lg flex items-center gap-0.5 transition-colors" id="toggle-add-child-form-btn">
+<span class="material-symbols-outlined text-xs">add</span> Add
+            </button>
+</div>
+</div>
+<!-- Collapsible Inline Add Child Form -->
+<form class="hidden mt-3 pt-3 border-t border-[#f2f4f6] flex flex-col gap-2.5 bg-slate-50 p-2.5 rounded-xl" id="add-child-form">
+<div class="text-[11px] font-bold text-slate-700">Register New Child for Carpools</div>
+<div class="grid grid-cols-3 gap-2">
+<div class="col-span-1">
+<label class="text-[10px] text-[#464555] block mb-0.5 font-medium">Child Name</label>
+<input class="w-full text-xs rounded-lg border-[#d8dadc] bg-white px-2.5 py-1.5 text-[#191c1e] focus:border-indigo-600 focus:ring-indigo-600" id="new-child-name" placeholder="e.g. Diya" required="" type="text"/>
+</div>
+<div class="col-span-1">
+<label class="text-[10px] text-[#464555] block mb-0.5 font-medium">Age</label>
+<input class="w-full text-xs rounded-lg border-[#d8dadc] bg-white px-2.5 py-1.5 text-[#191c1e] focus:border-indigo-600 focus:ring-indigo-600" id="new-child-age" max="17" min="3" placeholder="8" required="" type="number"/>
+</div>
+<div class="col-span-1">
+<label class="text-[10px] text-[#464555] block mb-0.5 font-medium">School</label>
+<input class="w-full text-xs rounded-lg border-[#d8dadc] bg-white px-2.5 py-1.5 text-[#191c1e] focus:border-indigo-600 focus:ring-indigo-600" id="new-child-school" placeholder="Inventure" required="" type="text"/>
+</div>
+</div>
+<div class="flex justify-end gap-2 mt-1">
+<button class="text-[11px] font-semibold text-slate-500 hover:text-slate-700 px-2 py-1" id="cancel-add-child-btn" type="button">Cancel</button>
+<button class="text-[11px] font-bold bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded-lg" type="submit">Save Child</button>
+</div>
+</form>
+<!-- Children List Tags -->
+<div class="mt-3 flex flex-col gap-2" id="children-list-container">
+<!-- Injected via JavaScript -->
+</div>
+</section>
+<!-- SECTION: YOUR ACTIVE PODS (Screen 2 & Screen 4 Trigger) -->
+<section class="flex flex-col gap-2.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<h2 class="text-sm font-bold text-[#191c1e]">Your Active Pods</h2>
+<span class="text-[10px] font-bold bg-emerald-100 text-emerald-800 px-1.5 py-0.2 rounded-full" id="active-pods-count">1 Enrolled</span>
+</div>
+<!-- Screen 3: + Create Pod Trigger Button (Disabled in Pending Mode) -->
+<button class="text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-xl flex items-center gap-1 shadow-sm transition-all active:scale-95" id="open-create-pod-btn">
+<span class="material-symbols-outlined text-xs">add_circle</span> + Create Pod
+          </button>
+</div>
+<div class="flex flex-col gap-3" id="active-pods-container">
+<!-- Injected dynamically -->
+</div>
+</section>
+<!-- SECTION: DISCOVER LOCAL PODS (Screen 2: Browse Society Pods) -->
+<section class="flex flex-col gap-2.5 mt-1">
+<div class="flex items-center justify-between">
+<div>
+<h2 class="text-sm font-bold text-[#191c1e]">Discover Local Pods</h2>
+<p class="text-[11px] text-[#777587]">Verified parents carpooling from Prestige Shantiniketan</p>
+</div>
+<span class="text-[10px] font-semibold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-full">Neighbor Verified</span>
+</div>
+<div class="flex flex-col gap-3" id="discover-pods-container">
+<!-- Injected dynamically -->
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="absolute bottom-0 left-0 right-0 bg-white border-t border-[#e0e3e5] px-4 py-2 flex justify-between items-center z-30" id="bottom-nav">
+<button class="nav-tab active flex-1 flex flex-col items-center gap-0.5 text-indigo-600" data-tab="dashboard">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="text-[10px] font-bold">Dashboard</span>
+</button>
+<button class="nav-tab flex-1 flex flex-col items-center gap-0.5 text-[#777587] hover:text-indigo-600" data-tab="pods">
+<span class="material-symbols-outlined text-xl">diversity_3</span>
+<span class="text-[10px] font-semibold">My Pods</span>
+</button>
+<button class="nav-tab flex-1 flex flex-col items-center gap-0.5 text-[#777587] hover:text-indigo-600" data-tab="schedule">
+<span class="material-symbols-outlined text-xl">calendar_today</span>
+<span class="text-[10px] font-semibold">Schedule</span>
+</button>
+<button class="nav-tab flex-1 flex flex-col items-center gap-0.5 text-[#777587] hover:text-indigo-600" data-tab="profile">
+<span class="material-symbols-outlined text-xl">account_circle</span>
+<span class="text-[10px] font-semibold">Profile</span>
+</button>
+</nav>
+<!-- SCREEN 3: INTERACTIVE MODAL - CREATE / MATCH NEW POD -->
+<div class="fixed md:absolute inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-end justify-center" id="create-pod-modal" onclick="if(event.target === this) this.classList.add('hidden')"><div class="bg-white w-full rounded-t-3xl p-5 shadow-2xl flex flex-col gap-3.5 max-h-[90vh] overflow-y-auto border-t border-slate-200 animate-slide-up relative" onclick="event.stopPropagation()">
+<!-- Drag Handle / Indicator -->
+<div class="w-12 h-1 bg-slate-300 rounded-full mx-auto -mt-1 mb-1 shrink-0"></div>
+<!-- Trust Badge Banner -->
+<div class="flex items-center justify-between bg-emerald-50 border border-emerald-200 rounded-xl px-3 py-2 text-emerald-800 text-xs">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-base text-emerald-600">verified_user</span>
+<span class="font-bold text-[11px]">Verified Resident Only</span>
+<span class="text-[10px] text-emerald-700">• Prestige Shantiniketan (T7, #1402)</span>
+</div>
+<span class="text-[10px] bg-emerald-200/80 text-emerald-900 font-extrabold px-1.5 py-0.5 rounded">Verified Parent</span>
+</div>
+<!-- Modal Header -->
+<div class="flex justify-between items-start pb-2 border-b border-[#e0e3e5]">
+<div>
+<h3 class="text-base font-extrabold text-[#191c1e] flex items-center gap-1.5">
+<span class="material-symbols-outlined text-indigo-600">group_add</span> Create &amp; Match School Pod
+      </h3>
+<p class="text-[11px] text-[#777587]">Organize a safe carpool rotation with verified society neighbors</p>
+</div>
+<button class="text-[#777587] hover:text-black p-1.5 rounded-full bg-slate-100 transition-colors" id="close-create-pod-modal">
+<span class="material-symbols-outlined text-sm font-bold">close</span>
+</button>
+</div>
+<form class="flex flex-col gap-3" id="create-pod-form">
+<!-- Destination School with Auto-complete Chips -->
+<div>
+<label class="text-xs font-bold text-[#464555] block mb-1">Destination School / Campus <span class="text-red-600">*</span></label>
+<div class="relative">
+<input class="w-full bg-[#f2f4f6] border border-[#d8dadc] text-xs rounded-xl px-3 py-2.5 text-[#191c1e] focus:bg-white focus:border-indigo-600 transition-colors" id="pod-school-input" placeholder="Select or type school name..." required="" type="text" value="Inventure Academy"/>
+<span class="material-symbols-outlined absolute right-2.5 top-2.5 text-sm text-slate-400">school</span>
+</div>
+<!-- Smart Suggestion Quick Pills -->
+<div class="flex flex-wrap gap-1 mt-1.5">
+<button class="text-[10px] font-semibold bg-indigo-50 hover:bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-md border border-indigo-200 transition-colors" onclick="document.getElementById('pod-school-input').value = 'Inventure Academy'" type="button">Inventure Academy</button>
+<button class="text-[10px] font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-0.5 rounded-md border border-slate-200 transition-colors" onclick="document.getElementById('pod-school-input').value = 'Greenwood High'" type="button">Greenwood High</button>
+<button class="text-[10px] font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-0.5 rounded-md border border-slate-200 transition-colors" onclick="document.getElementById('pod-school-input').value = 'TISB (Whitefield)'" type="button">TISB</button>
+<button class="text-[10px] font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-0.5 rounded-md border border-slate-200 transition-colors" onclick="document.getElementById('pod-school-input').value = 'DPS East'" type="button">DPS East</button>
+</div>
+</div>
+<!-- Pod Name -->
+<div>
+<label class="text-xs font-bold text-[#464555] block mb-1">Pod Name <span class="text-red-600">*</span></label>
+<input class="w-full bg-[#f2f4f6] border border-[#d8dadc] text-xs rounded-xl px-3 py-2.5 text-[#191c1e] focus:bg-white focus:border-indigo-600 font-medium transition-colors" id="pod-name-input" placeholder="e.g. Inventure Morning Champions (T7-T10)" required="" type="text" value="Inventure Morning Champions (T7-T10)"/>
+</div>
+<!-- Departure Time & Return Trip -->
+<div class="grid grid-cols-2 gap-2.5">
+<div>
+<label class="text-xs font-bold text-[#464555] block mb-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs text-indigo-600">schedule</span> Morning Departure
+        </label>
+<input class="w-full bg-[#f2f4f6] border border-[#d8dadc] text-xs rounded-xl px-3 py-2 text-[#191c1e] font-medium focus:bg-white" id="pod-time-input" required="" type="time" value="08:00"/>
+</div>
+<div>
+<label class="text-xs font-bold text-[#464555] block mb-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs text-indigo-600">history_toggle_off</span> Return Pickup
+        </label>
+<input class="w-full bg-[#f2f4f6] border border-[#d8dadc] text-xs rounded-xl px-3 py-2 text-[#191c1e] font-medium focus:bg-white" id="pod-return-time-input" required="" type="time" value="15:30"/>
+</div>
+</div>
+<!-- Max Vehicle Capacity Visual Stepper -->
+<div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200 flex items-center justify-between">
+<div>
+<div class="text-xs font-bold text-slate-800 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-indigo-600">directions_car</span> Vehicle Capacity
+        </div>
+<p class="text-[10px] text-slate-500">Maximum kids accommodated</p>
+</div>
+<div class="flex items-center gap-2">
+<button class="w-7 h-7 rounded-lg bg-white border border-slate-300 font-bold text-xs hover:bg-slate-100 flex items-center justify-center text-slate-700 shadow-xs" onclick="let el = document.getElementById('pod-capacity-input'); if(parseInt(el.value) &gt; 2) el.value = parseInt(el.value) - 1;" type="button">-</button>
+<input class="w-10 text-center font-bold text-xs bg-transparent border-0 p-0 text-indigo-700" id="pod-capacity-input" max="6" min="2" readonly="" type="number" value="4"/>
+<button class="w-7 h-7 rounded-lg bg-white border border-slate-300 font-bold text-xs hover:bg-slate-100 flex items-center justify-center text-slate-700 shadow-xs" onclick="let el = document.getElementById('pod-capacity-input'); if(parseInt(el.value) &lt; 6) el.value = parseInt(el.value) + 1;" type="button">+</button>
+</div>
+</div>
+<!-- Founding Children (Auto-Assigned Selection) -->
+<div class="border border-indigo-200 bg-indigo-50/50 rounded-xl p-3 flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="text-xs font-extrabold text-indigo-950 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-indigo-600">child_care</span> Founding Children (Auto-Assigned)
+        </span>
+<span class="text-[9px] font-bold bg-indigo-100 text-indigo-800 px-1.5 py-0.5 rounded-full">Automatic</span>
+</div>
+<p class="text-[10px] text-indigo-900 leading-snug">
+        Select which of your registered children will be founding members in this carpool rotation:
+      </p>
+<div class="flex flex-col gap-1.5 mt-0.5" id="founding-children-checkboxes">
+<label class="flex items-center justify-between p-2 rounded-lg bg-white border border-indigo-100 text-xs text-slate-800 cursor-pointer shadow-xs hover:border-indigo-300 transition-colors">
+<div class="flex items-center gap-2">
+<input checked="" class="rounded text-indigo-600 focus:ring-indigo-600 h-3.5 w-3.5 child-select-box" type="checkbox" value="Aarav Kapoor"/>
+<span class="font-bold text-[11px] text-[#191c1e]">Aarav Kapoor</span>
+<span class="text-[10px] bg-slate-100 text-slate-600 px-1.5 py-0.2 rounded font-medium">8 yrs</span>
+</div>
+<span class="text-[10px] text-indigo-600 font-semibold">Inventure Academy</span>
+</label>
+<label class="flex items-center justify-between p-2 rounded-lg bg-white border border-indigo-100 text-xs text-slate-800 cursor-pointer shadow-xs hover:border-indigo-300 transition-colors">
+<div class="flex items-center gap-2">
+<input checked="" class="rounded text-indigo-600 focus:ring-indigo-600 h-3.5 w-3.5 child-select-box" type="checkbox" value="Diya Kapoor"/>
+<span class="font-bold text-[11px] text-[#191c1e]">Diya Kapoor</span>
+<span class="text-[10px] bg-slate-100 text-slate-600 px-1.5 py-0.2 rounded font-medium">6 yrs</span>
+</div>
+<span class="text-[10px] text-indigo-600 font-semibold">Greenwood High</span>
+</label>
+</div>
+</div>
+<!-- Vehicle & Host Rotation Agreement -->
+<div class="bg-slate-50 border border-slate-200 rounded-xl p-2.5 flex flex-col gap-1.5">
+<div class="flex items-center justify-between text-xs">
+<span class="text-[11px] font-bold text-slate-700 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs text-slate-500">badge</span> Host Car Registration
+        </span>
+<span class="text-[10px] font-bold text-indigo-700 bg-white px-2 py-0.5 rounded border border-slate-200">KA-03-MZ-9912 (Honda Civic)</span>
+</div>
+<label class="flex items-start gap-2 cursor-pointer mt-0.5">
+<input checked="" class="rounded text-indigo-600 focus:ring-indigo-600 h-3.5 w-3.5 mt-0.5" required="" type="checkbox"/>
+<span class="text-[10px] text-slate-600 leading-tight">
+          I agree to the Society Pod rotational driver schedule and verify valid vehicle insurance.
+        </span>
+</label>
+</div>
+<!-- Submit / Launch Button -->
+<button class="w-full bg-indigo-600 hover:bg-indigo-700 active:scale-98 text-white text-xs font-bold py-3.5 rounded-xl shadow-md transition-all mt-1 flex items-center justify-center gap-1.5" type="submit">
+<span class="material-symbols-outlined text-sm">rocket_launch</span>
+<span>🚀 Publish &amp; Launch Pod</span>
+</button>
+</form>
+</div></div>
+<!-- SCREEN 4 MODAL: TRIGGER EMERGENCY SOS (DRIVER STUCK / DELAY) -->
+<div class="hidden fixed md:absolute inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" id="trigger-sos-modal">
+<div class="bg-white w-full max-w-xs rounded-2xl p-5 shadow-2xl flex flex-col gap-3.5 border-2 border-red-500 animate-scale-up">
+<div class="flex items-center justify-between pb-2 border-b border-red-100">
+<div class="flex items-center gap-2 text-red-600">
+<span class="material-symbols-outlined font-bold text-xl">emergency</span>
+<h3 class="text-sm font-extrabold text-red-700">Trigger Emergency SOS</h3>
+</div>
+<button class="text-slate-400 hover:text-slate-700 text-sm" id="close-sos-modal-btn">
+<span class="material-symbols-outlined text-sm">close</span>
+</button>
+</div>
+<p class="text-[11px] text-slate-600">
+          Broadcast an urgent pickup alert to all verified parents in your society pod network and nearby towers.
+        </p>
+<form class="flex flex-col gap-2.5" id="sos-trigger-form">
+<div>
+<label class="text-[10px] font-bold text-slate-700 uppercase block mb-1">Select Child Affected</label>
+<select class="w-full bg-slate-50 border border-slate-300 text-xs rounded-lg px-2.5 py-1.5 font-medium" id="sos-child-select">
+<!-- Dynamically populated -->
+</select>
+</div>
+<div>
+<label class="text-[10px] font-bold text-slate-700 uppercase block mb-1">Delay Reason / Situation</label>
+<textarea class="w-full bg-slate-50 border border-slate-300 text-xs rounded-lg p-2 text-slate-900 focus:bg-white focus:border-red-500" id="sos-reason-input" placeholder="Stuck at Silk Board junction traffic, 30 min delay..." rows="2"></textarea>
+</div>
+<div class="bg-amber-50 border border-amber-200 rounded-lg p-2 text-amber-900 text-[11px] flex items-center gap-2">
+<span class="material-symbols-outlined text-amber-600 text-sm">pin</span>
+<div>
+<span class="font-bold">Automated Handshake OTP:</span>
+<p class="text-[10px] text-amber-800">A 4-digit code will be secured for custody handoff.</p>
+</div>
+</div>
+<div class="flex gap-2 mt-2">
+<button class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold py-2.5 rounded-xl" id="cancel-sos-trigger-btn" type="button">
+              Cancel
+            </button>
+<button class="flex-1 bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-2.5 rounded-xl shadow-md flex items-center justify-center gap-1" type="submit">
+<span class="material-symbols-outlined text-xs">broadcast_on_personal</span> Broadcast SOS
+            </button>
+</div>
+</form>
+</div>
+</div>
+<!-- MODAL: RESIDENT VOUCH QR CODE -->
+<div class="hidden fixed md:absolute inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" id="vouch-qr-modal">
+<div class="bg-white w-full max-w-xs rounded-2xl p-5 shadow-2xl flex flex-col items-center text-center gap-3">
+<div class="flex justify-between w-full items-center">
+<h3 class="text-sm font-bold text-[#191c1e]">Neighbor Vouch QR</h3>
+<button class="text-slate-400 p-1" id="close-vouch-qr-modal">
+<span class="material-symbols-outlined text-sm">close</span>
+</button>
+</div>
+<div class="w-44 h-44 bg-slate-50 border-2 border-dashed border-indigo-600 rounded-2xl flex flex-col items-center justify-center p-3 relative">
+<span class="material-symbols-outlined text-6xl text-indigo-600">qr_code_2</span>
+<div class="text-[10px] font-bold text-slate-600 mt-1">Prestige Tower 7 #1402</div>
+<div class="text-[9px] text-slate-400">Ask any verified neighbor to scan</div>
+</div>
+<div class="w-full bg-slate-50 p-2.5 rounded-xl text-left border border-slate-200">
+<span class="text-[10px] uppercase font-bold text-slate-500 block">Offline Vouch Code</span>
+<div class="text-sm font-mono font-bold text-indigo-700 mt-0.5">PRESTIGE-T7-9942</div>
+</div>
+<button class="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-2.5 rounded-xl transition-all" id="demo-simulate-vouch-btn">
+          ✓ Simulate Neighbor Approving Vouch
+        </button>
+</div>
+</div>
+</div>
+<!-- APPLICATION LOGIC & MOCK DATA MANAGEMENT -->
+<script>
+    /**
+     * Society Pods - Core State Architecture
+     */
+    const state = {
+      user: {
+        name: "Vikram Kapoor",
+        society: "Prestige Shantiniketan",
+        tower: "Tower 7",
+        flat: "Flat 1402",
+        phone: "+91 98765 43210",
+        vehicle: "Honda Civic • KA-03-MZ-9912"
+      },
+      // Trust Gate State
+      is_verified_resident: true, // Controlled by toggle (Verified vs Pending Sandbox)
+      // Children Management
+      children: [
+        { id: "c1", name: "Aarav Kapoor", age: 8, school: "Inventure Academy" },
+        { id: "c2", name: "Diya Kapoor", age: 6, school: "Greenwood High" }
+      ],
+      // Pods System
+      pods: [
+        {
+          id: "pod-1",
+          name: "Morning Champions Pod",
+          school: "Inventure Academy",
+          pickup_time: "08:15 AM",
+          capacity: 4,
+          members_count: 3,
+          driver: { name: "Priya M.", flat: "Tower 4, 802", role: "Driver Today" },
+          kids: ["Aarav Kapoor", "Maya Sharma", "Rohan Verma"],
+          is_enrolled: true,
+          status: "En Route"
+        },
+        {
+          id: "pod-2",
+          name: "Greenwood High Evening Express",
+          school: "Greenwood High",
+          pickup_time: "03:45 PM",
+          capacity: 4,
+          members_count: 2,
+          driver: { name: "Anand R.", flat: "Tower 2, 501", role: "Host Parent" },
+          kids: ["Kavya R.", "Arjun K."],
+          is_enrolled: false,
+          status: "Forming"
+        }
+      ],
+      // Screen 4: Real-time SOS State
+      sos_alert: {
+        id: "sos-882",
+        active: true,
+        pod_id: "pod-1",
+        pod_name: "Morning Champions Pod",
+        driver_name: "Priya M. (KA-03-MZ-9912)",
+        target_kid: "Maya Sharma (Grade 3)",
+        reason: "Stuck at Silk Board junction bottleneck, estimated delay 35 mins. Seeking pickup support.",
+        handshake_otp: "8492",
+        status: "OPEN", // 'OPEN' or 'CLAIMED'
+        claimed_by: null, // "Flat 1104 (Rahul Sharma)"
+        timestamp: "Just now"
+      }
+    };
+
+    /**
+     * DOM Selector Cache
+     */
+    const trustBadgeContainer = document.getElementById('trust-badge-container');
+    const toggleSandboxBtn = document.getElementById('toggle-sandbox-btn');
+    const toggleSandboxText = document.getElementById('toggle-sandbox-text');
+    const pendingSandboxBanner = document.getElementById('pending-sandbox-banner');
+    const childrenCountBadge = document.getElementById('children-count-badge');
+    const childrenListContainer = document.getElementById('children-list-container');
+    const toggleAddChildBtn = document.getElementById('toggle-add-child-form-btn');
+    const addChildForm = document.getElementById('add-child-form');
+    const cancelAddChildBtn = document.getElementById('cancel-add-child-btn');
+    const activePodsContainer = document.getElementById('active-pods-container');
+    const discoverPodsContainer = document.getElementById('discover-pods-container');
+    const activePodsCount = document.getElementById('active-pods-count');
+    const activeSosContainer = document.getElementById('active-sos-container');
+    const quickSosHeaderBtn = document.getElementById('quick-sos-header-btn');
+    
+    // Modals
+    const createPodModal = document.getElementById('create-pod-modal');
+    const openCreatePodBtn = document.getElementById('open-create-pod-btn');
+    const closeCreatePodModal = document.getElementById('close-create-pod-modal');
+    const createPodForm = document.getElementById('create-pod-form');
+    const podEnrollChildSelect = document.getElementById('pod-enroll-child-select');
+
+    const triggerSosModal = document.getElementById('trigger-sos-modal');
+    const closeSosModalBtn = document.getElementById('close-sos-modal-btn');
+    const cancelSosTriggerBtn = document.getElementById('cancel-sos-trigger-btn');
+    const sosTriggerForm = document.getElementById('sos-trigger-form');
+    const sosChildSelect = document.getElementById('sos-child-select');
+
+    const vouchQrModal = document.getElementById('vouch-qr-modal');
+    const openVouchQrTrigger = document.getElementById('open-vouch-qr-trigger');
+    const closeVouchQrModal = document.getElementById('close-vouch-qr-modal');
+    const demoSimulateVouchBtn = document.getElementById('demo-simulate-vouch-btn');
+    const quickVouchMeBtn = document.getElementById('quick-vouch-me-btn');
+
+    /**
+     * Simulated API Handlers
+     */
+    function apiVerifyResident(status) {
+      state.is_verified_resident = status;
+      renderApp();
+    }
+
+    function apiAddChild(child) {
+      state.children.push({
+        id: 'c-' + Date.now(),
+        ...child
+      });
+      renderApp();
+    }
+
+    function apiRemoveChild(id) {
+      state.children = state.children.filter(c => c.id !== id);
+      renderApp();
+    }
+
+    function apiJoinPod(podId) {
+      if (!state.is_verified_resident) return;
+      const target = state.pods.find(p => p.id === podId);
+      if (target) {
+        target.is_enrolled = true;
+        target.members_count += 1;
+        if (state.children.length > 0) {
+          target.kids.push(state.children[0].name);
+        } else {
+          target.kids.push("Your Child");
+        }
+        renderApp();
+      }
+    }
+
+    function apiCreatePod(newPodData) {
+      if (!state.is_verified_resident) return;
+      const newPod = {
+        id: 'pod-' + Date.now(),
+        name: newPodData.name,
+        school: newPodData.school,
+        pickup_time: newPodData.time,
+        capacity: parseInt(newPodData.capacity, 10),
+        members_count: 1,
+        driver: { name: state.user.name + " (You)", flat: `${state.user.tower}, ${state.user.flat}`, role: "Pod Lead" },
+        kids: [newPodData.enrolledChildName],
+        is_enrolled: true,
+        status: "Forming"
+      };
+      state.pods.unshift(newPod);
+      renderApp();
+    }
+
+    function apiTriggerSOS(kidName, reason) {
+      const randomOtp = Math.floor(1000 + Math.random() * 9000).toString();
+      state.sos_alert = {
+        id: "sos-" + Date.now(),
+        active: true,
+        pod_id: "pod-1",
+        pod_name: state.pods[0]?.name || "Active Pod",
+        driver_name: `${state.user.name} (${state.user.vehicle})`,
+        target_kid: kidName,
+        reason: reason || "Unexpected road blockage, need neighbor swap.",
+        handshake_otp: randomOtp,
+        status: "OPEN",
+        claimed_by: null,
+        timestamp: "Just now"
+      };
+      renderApp();
+    }
+
+    function apiClaimSOS() {
+      if (!state.is_verified_resident) return;
+      if (state.sos_alert && state.sos_alert.active) {
+        state.sos_alert.status = "CLAIMED";
+        state.sos_alert.claimed_by = "Flat 1104 (Rahul Sharma - Verified Neighbor)";
+        renderApp();
+      }
+    }
+
+    function apiCompleteSOS() {
+      if (state.sos_alert) {
+        state.sos_alert.active = false;
+        renderApp();
+      }
+    }
+
+    /**
+     * Render Subsystems
+     */
+
+    // 1. Render Header Trust Badge and Simulator Button
+    function renderTrustHeader() {
+      if (state.is_verified_resident) {
+        // Emerald Verified Pill
+        trustBadgeContainer.innerHTML = `
+          <div class="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 border border-emerald-300 text-[11px] font-bold px-2.5 py-1 rounded-full shadow-xs">
+            <span class="material-symbols-outlined text-[15px] font-bold text-emerald-600">verified</span>
+            <span>Verified Resident</span>
+          </div>
+        `;
+        pendingSandboxBanner.classList.add('hidden');
+        toggleSandboxText.textContent = "Switch to Sandbox";
+        toggleSandboxBtn.className = "text-[11px] font-semibold px-2.5 py-1 rounded-full border border-amber-300 bg-amber-50 text-amber-800 hover:bg-amber-100 transition-colors flex items-center gap-1";
+      } else {
+        // Amber Pending Warning Pill
+        trustBadgeContainer.innerHTML = `
+          <div class="inline-flex items-center gap-1.5 bg-amber-50 text-amber-800 border border-amber-300 text-[11px] font-bold px-2.5 py-1 rounded-full shadow-xs animate-pulse">
+            <span class="material-symbols-outlined text-[15px] font-bold text-amber-600">warning</span>
+            <span>Pending Neighbor Vouch</span>
+          </div>
+        `;
+        pendingSandboxBanner.classList.remove('hidden');
+        toggleSandboxText.textContent = "Switch to Verified";
+        toggleSandboxBtn.className = "text-[11px] font-semibold px-2.5 py-1 rounded-full border border-emerald-300 bg-emerald-50 text-emerald-800 hover:bg-emerald-100 transition-colors flex items-center gap-1";
+      }
+
+      // Update Create Pod button visual lock
+      if (!state.is_verified_resident) {
+        openCreatePodBtn.className = "text-xs font-bold bg-slate-200 text-slate-400 px-3 py-1.5 rounded-xl flex items-center gap-1 cursor-not-allowed";
+        openCreatePodBtn.innerHTML = `<span class="material-symbols-outlined text-xs">lock</span> Locked`;
+        openCreatePodBtn.title = "Verification required to create pods";
+      } else {
+        openCreatePodBtn.className = "text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-xl flex items-center gap-1 shadow-sm transition-all active:scale-95";
+        openCreatePodBtn.innerHTML = `<span class="material-symbols-outlined text-xs">add_circle</span> + Create Pod`;
+        openCreatePodBtn.title = "";
+      }
+    }
+
+    // 2. Render Children List & Counter
+    function renderChildrenManagement() {
+      childrenCountBadge.textContent = `${state.children.length} ${state.children.length === 1 ? 'Child' : 'Kids'} Registered`;
+
+      if (state.children.length === 0) {
+        childrenListContainer.innerHTML = `
+          <div class="text-center py-3 bg-slate-50 rounded-xl border border-dashed border-slate-200 text-slate-400 text-xs">
+            No children registered yet. Click "Add" above.
+          </div>
+        `;
+      } else {
+        childrenListContainer.innerHTML = state.children.map(child => `
+          <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50/80 border border-slate-200 hover:border-indigo-200 transition-colors">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-700 font-extrabold text-xs flex items-center justify-center">
+                ${child.name.charAt(0)}
+              </div>
+              <div>
+                <div class="flex items-center gap-1.5">
+                  <span class="text-xs font-bold text-[#191c1e]">${child.name}</span>
+                  <span class="text-[10px] bg-slate-200 text-slate-700 px-1.5 rounded font-semibold">${child.age} yrs</span>
+                </div>
+                <p class="text-[10px] text-indigo-600 font-medium">${child.school}</p>
+              </div>
+            </div>
+            <button onclick="handleRemoveChild('${child.id}')" class="text-slate-400 hover:text-red-600 p-1 rounded transition-colors" title="Remove child">
+              <span class="material-symbols-outlined text-sm">delete</span>
+            </button>
+          </div>
+        `).join('');
+      }
+
+      // Also update select options in modals
+      podEnrollChildSelect.innerHTML = state.children.map(c => `<option value="${c.name}">${c.name} (${c.school})</option>`).join('') || '<option value="No child">Default Child</option>';
+      sosChildSelect.innerHTML = state.children.map(c => `<option value="${c.name} (${c.school})">${c.name} (${c.school})</option>`).join('') || '<option value="Maya Sharma (Grade 3)">Maya Sharma (Grade 3)</option>';
+    }
+
+    // 3. Render Active and Discover Pods
+    function renderPods() {
+      const activePods = state.pods.filter(p => p.is_enrolled);
+      const discoverPods = state.pods.filter(p => !p.is_enrolled);
+
+      activePodsCount.textContent = `${activePods.length} Enrolled`;
+
+      // Render Active Pods
+      if (activePods.length === 0) {
+        activePodsContainer.innerHTML = `
+          <div class="bg-white rounded-2xl p-4 border border-dashed border-slate-300 text-center text-xs text-slate-500">
+            You are not currently enrolled in any active school pods. Browse society pods below or create one.
+          </div>
+        `;
+      } else {
+        activePodsContainer.innerHTML = activePods.map(pod => `
+          <div class="bg-white rounded-2xl p-4 shadow-sm border border-indigo-100 hover:border-indigo-300 transition-all flex flex-col gap-3">
+            <div class="flex justify-between items-start">
+              <div>
+                <div class="flex items-center gap-1.5">
+                  <span class="bg-emerald-50 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded-full inline-flex items-center gap-1 border border-emerald-200">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> ${pod.status}
+                  </span>
+                  <span class="text-[10px] font-bold text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">${pod.members_count}/${pod.capacity} Seats Filled</span>
+                </div>
+                <h3 class="text-sm font-extrabold text-[#191c1e] mt-1.5">${pod.name}</h3>
+                <p class="text-[11px] text-[#777587] flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[13px] text-indigo-600">schedule</span>
+                  <span>Departure: <strong class="text-slate-800">${pod.pickup_time}</strong></span>
+                  <span class="text-slate-300">•</span>
+                  <span>${pod.school}</span>
+                </p>
+              </div>
+
+              <!-- SCREEN 4: High Contrast Emergency Trigger Button -->
+              <button onclick="handleOpenSosModal('${pod.id}')" 
+                class="${!state.is_verified_resident ? 'bg-slate-200 text-slate-400 cursor-not-allowed' : 'bg-red-600 hover:bg-red-700 text-white shadow-md active:scale-95'} text-[11px] font-bold px-2.5 py-1.5 rounded-xl flex items-center gap-1 transition-all"
+                ${!state.is_verified_resident ? 'disabled title="Verify resident status to access SOS actions"' : ''}>
+                <span class="material-symbols-outlined text-xs">emergency</span>
+                <span>🚨 Trigger SOS</span>
+              </button>
+            </div>
+
+            <!-- Driver & Rotation Meta -->
+            <div class="bg-slate-50 p-2.5 rounded-xl flex items-center justify-between border border-slate-100">
+              <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-xs">
+                  ${pod.driver.name.substring(0,2).toUpperCase()}
+                </div>
+                <div>
+                  <div class="text-xs font-bold text-slate-800">${pod.driver.name}</div>
+                  <div class="text-[10px] text-slate-500">${pod.driver.flat}</div>
+                </div>
+              </div>
+              <span class="text-[11px] font-semibold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-md border border-indigo-100">
+                ${pod.driver.role}
+              </span>
+            </div>
+
+            <!-- Enrolled Children Avatars -->
+            <div class="flex items-center justify-between pt-1 text-[11px] border-t border-slate-100">
+              <span class="text-slate-500 font-medium">Children in Pod:</span>
+              <div class="flex items-center gap-1.5">
+                ${pod.kids.map(kid => `
+                  <span class="bg-indigo-50 text-indigo-800 font-bold px-2 py-0.5 rounded-md text-[10px] border border-indigo-100">
+                    ${kid}
+                  </span>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      // Render Discover Local Pods
+      if (discoverPods.length === 0) {
+        discoverPodsContainer.innerHTML = `
+          <div class="bg-white rounded-2xl p-4 border border-dashed border-slate-300 text-center text-xs text-slate-500">
+            No more open pods in Prestige Shantiniketan right now.
+          </div>
+        `;
+      } else {
+        discoverPodsContainer.innerHTML = discoverPods.map(pod => `
+          <div class="bg-white rounded-2xl p-4 shadow-sm border border-[#e0e3e5] flex flex-col gap-3 hover:shadow-md transition-all">
+            <div class="flex justify-between items-start">
+              <div>
+                <span class="text-[10px] font-bold bg-slate-100 text-slate-700 px-2 py-0.5 rounded-full border border-slate-200">
+                  ${pod.members_count}/${pod.capacity} slots filled
+                </span>
+                <h3 class="text-sm font-bold text-[#191c1e] mt-1">${pod.name}</h3>
+                <p class="text-[11px] text-[#777587] mt-0.5">${pod.school} • Departs ${pod.pickup_time}</p>
+              </div>
+
+              <!-- Join Pod Action Button -->
+              ${state.is_verified_resident ? `
+                <button onclick="handleJoinPod('${pod.id}')" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-3.5 py-1.5 rounded-xl shadow-xs transition-all active:scale-95 flex items-center gap-1">
+                  <span>Join Pod</span>
+                  <span class="material-symbols-outlined text-xs">arrow_forward</span>
+                </button>
+              ` : `
+                <button disabled class="bg-slate-100 text-slate-400 border border-slate-200 text-xs font-semibold px-2.5 py-1.5 rounded-xl flex items-center gap-1 cursor-not-allowed" title="You cannot join pods in Pending Sandbox state">
+                  <span class="material-symbols-outlined text-xs">lock</span>
+                  <span>Join Locked</span>
+                </button>
+              `}
+            </div>
+
+            <div class="flex items-center justify-between text-[11px] bg-slate-50 p-2 rounded-xl border border-slate-100">
+              <div class="flex items-center gap-1 text-slate-600">
+                <span class="material-symbols-outlined text-xs text-indigo-600">person</span>
+                <span>Host: <strong>${pod.driver.name}</strong> (${pod.driver.flat})</span>
+              </div>
+              <span class="text-[10px] text-emerald-700 font-bold">1 Seat Available</span>
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+
+    // 4. SCREEN 4: Render Real-Time SOS & Emergency Swap Panel
+    function renderEmergencyPanel() {
+      const sos = state.sos_alert;
+      if (!sos || !sos.active) {
+        activeSosContainer.innerHTML = "";
+        return;
+      }
+
+      // Check if claimed vs open
+      const isClaimed = sos.status === "CLAIMED";
+
+      activeSosContainer.innerHTML = `
+        <div class="bg-red-50/90 rounded-2xl border-2 ${isClaimed ? 'border-emerald-500' : 'border-red-500 pulse-urgent'} p-4 shadow-lg transition-all flex flex-col gap-3">
+          
+          <!-- Banner Header -->
+          <div class="flex items-start justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-8 h-8 rounded-full ${isClaimed ? 'bg-emerald-600' : 'bg-red-600'} text-white flex items-center justify-center font-bold text-sm shadow">
+                <span class="material-symbols-outlined text-base">${isClaimed ? 'handshake' : 'emergency_share'}</span>
+              </span>
+              <div>
+                <div class="flex items-center gap-2">
+                  <h3 class="text-xs font-black ${isClaimed ? 'text-emerald-800' : 'text-red-700'} tracking-wider uppercase">
+                    ${isClaimed ? '✓ Verification Handshake Active' : '🚨 LIVE EMERGENCY SOS • POD DELAY'}
+                  </h3>
+                  <span class="text-[10px] font-bold px-1.5 py-0.2 rounded ${isClaimed ? 'bg-emerald-100 text-emerald-800' : 'bg-red-200 text-red-900'}">${sos.timestamp}</span>
+                </div>
+                <p class="text-[11px] text-slate-700 font-medium">Pod: <strong>${sos.pod_name}</strong> • Child: <span class="font-bold text-red-900 bg-red-100 px-1 rounded">${sos.target_kid}</span></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Situation Note -->
+          <div class="bg-white/90 p-2.5 rounded-xl border border-red-200 text-xs text-slate-800 flex items-start gap-2 shadow-xs">
+            <span class="material-symbols-outlined text-amber-600 text-base shrink-0 mt-0.5">report_problem</span>
+            <div>
+              <p class="font-bold text-[11px] text-red-950">Driver Message from ${sos.driver_name}:</p>
+              <p class="text-slate-700 text-[11px] mt-0.5 italic">"${sos.reason}"</p>
+            </div>
+          </div>
+
+          <!-- Handshake OTP Box -->
+          <div class="bg-white rounded-xl p-3 border ${isClaimed ? 'border-emerald-300' : 'border-amber-300'} flex items-center justify-between">
+            <div>
+              <span class="text-[10px] uppercase font-extrabold text-slate-500 block">4-Digit Security Handshake OTP</span>
+              <p class="text-[10px] text-slate-600">Both parents must confirm this OTP before physical child transfer.</p>
+            </div>
+            <div class="text-xl font-black font-mono tracking-widest text-indigo-700 bg-indigo-50 px-3 py-1 rounded-lg border border-indigo-200 shadow-inner">
+              ${sos.handshake_otp}
+            </div>
+          </div>
+
+          <!-- STATUS 1: CLAIMED SUCCESS BANNER -->
+          ${isClaimed ? `
+            <div class="bg-emerald-100 border border-emerald-300 rounded-xl p-3 flex flex-col gap-2 text-emerald-950">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-emerald-700 text-lg">check_circle</span>
+                <span class="text-xs font-bold">Swap Claimed by ${sos.claimed_by}</span>
+              </div>
+              <p class="text-[11px] text-emerald-800">
+                Safe swap in progress. Flat 1104 is dispatched to Inventure Academy gate. Verify the 4-digit OTP upon return.
+              </p>
+              <div class="flex justify-end pt-1">
+                <button onclick="handleCompleteSos()" class="bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1 shadow-sm transition-all">
+                  <span class="material-symbols-outlined text-xs">task_alt</span> Complete Handshake &amp; Resolve
+                </button>
+              </div>
+            </div>
+          ` : `
+            <!-- STATUS 2: OPEN / UNCLAIMED -> NEIGHBORING PARENT PERSPECTIVE -->
+            <div class="bg-white/80 rounded-xl p-3 border border-red-200 flex flex-col gap-2.5">
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-[10px] font-extrabold text-slate-600 uppercase tracking-wider">Neighboring Parent Response</span>
+                <span class="text-[10px] text-amber-700 font-bold bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">Immediate Action Required</span>
+              </div>
+              <p class="text-[11px] text-slate-600">
+                Are you nearby or heading towards the school? Step in to pick up ${sos.target_kid} on behalf of your society.
+              </p>
+
+              <div>
+                ${state.is_verified_resident ? `
+                  <button onclick="handleClaimSos()" class="w-full bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold py-2.5 rounded-xl shadow-md flex items-center justify-center gap-1.5 transition-all active:scale-98">
+                    <span>✋ Claim Swap &amp; Help</span>
+                    <span class="material-symbols-outlined text-sm">handshake</span>
+                  </button>
+                ` : `
+                  <button disabled class="w-full bg-slate-200 text-slate-400 text-xs font-bold py-2.5 rounded-xl cursor-not-allowed flex items-center justify-center gap-1" title="Pending Sandbox users cannot claim emergency swaps">
+                    <span class="material-symbols-outlined text-xs">lock</span>
+                    <span>✋ Claim Swap (Disabled in Sandbox)</span>
+                  </button>
+                  <p class="text-[10px] text-amber-800 text-center mt-1">Pending neighbor voucher prevents claiming emergency custody.</p>
+                `}
+              </div>
+            </div>
+          `}
+        </div>
+      `;
+    }
+
+    /**
+     * Master Render
+     */
+    function renderApp() {
+      renderTrustHeader();
+      renderChildrenManagement();
+      renderPods();
+      renderEmergencyPanel();
+    }
+
+    /**
+     * Event Listeners & Interactive Handlers
+     */
+
+    // 1. Toggle Sandbox vs Verified Mode
+    toggleSandboxBtn.addEventListener('click', () => {
+      apiVerifyResident(!state.is_verified_resident);
+    });
+
+    quickVouchMeBtn.addEventListener('click', () => {
+      apiVerifyResident(true);
+    });
+
+    // 2. Children Inline Form Toggles
+    toggleAddChildBtn.addEventListener('click', () => {
+      addChildForm.classList.toggle('hidden');
+      if (!addChildForm.classList.contains('hidden')) {
+        document.getElementById('new-child-name').focus();
+      }
+    });
+
+    cancelAddChildBtn.addEventListener('click', () => {
+      addChildForm.classList.add('hidden');
+    });
+
+    addChildForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('new-child-name').value.trim();
+      const age = document.getElementById('new-child-age').value.trim();
+      const school = document.getElementById('new-child-school').value.trim();
+
+      if (name && age && school) {
+        apiAddChild({ name, age: parseInt(age, 10), school });
+        addChildForm.reset();
+        addChildForm.classList.add('hidden');
+      }
+    });
+
+    window.handleRemoveChild = function(childId) {
+      if (confirm("Remove child from society carpool records?")) {
+        apiRemoveChild(childId);
+      }
+    };
+
+    // 3. Pod Join Handler
+    window.handleJoinPod = function(podId) {
+      apiJoinPod(podId);
+    };
+
+    // 4. Screen 3: Create Pod Modal Handlers
+    openCreatePodBtn.addEventListener('click', () => {
+      if (!state.is_verified_resident) {
+        alert("Action Locked: You must be a Verified Resident to create a new society pod. Toggle to Verified state using the button at the top.");
+        return;
+      }
+      createPodModal.classList.remove('hidden');
+    });
+
+    closeCreatePodModal.addEventListener('click', () => {
+      createPodModal.classList.add('hidden');
+    });
+
+    createPodForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('pod-name-input').value.trim();
+      const school = document.getElementById('pod-school-input').value.trim();
+      const time = document.getElementById('pod-time-input').value;
+      const capacity = document.getElementById('pod-capacity-input').value;
+      const enrolledChildName = podEnrollChildSelect.value || (state.children[0]?.name || "Your Child");
+
+      if (name && school) {
+        apiCreatePod({ name, school, time, capacity, enrolledChildName });
+        createPodForm.reset();
+        createPodModal.classList.add('hidden');
+      }
+    });
+
+    // 5. Screen 4: Emergency SOS Modal Trigger
+    window.handleOpenSosModal = function(podId) {
+      if (!state.is_verified_resident) {
+        alert("Action Locked in Sandbox: Pending accounts cannot trigger live emergency broadcasts.");
+        return;
+      }
+      triggerSosModal.classList.remove('hidden');
+    };
+
+    quickSosHeaderBtn.addEventListener('click', () => {
+      if (!state.is_verified_resident) {
+        alert("Action Locked: Switch to Verified Resident to trigger an SOS alert.");
+        return;
+      }
+      triggerSosModal.classList.remove('hidden');
+    });
+
+    closeSosModalBtn.addEventListener('click', () => triggerSosModal.classList.add('hidden'));
+    cancelSosTriggerBtn.addEventListener('click', () => triggerSosModal.classList.add('hidden'));
+
+    sosTriggerForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const kidName = sosChildSelect.value || "Child";
+      const reason = document.getElementById('sos-reason-input').value.trim() || "Stuck in traffic, pickup delay.";
+      apiTriggerSOS(kidName, reason);
+      triggerSosModal.classList.add('hidden');
+    });
+
+    // 6. SOS Claim and Complete Handlers
+    window.handleClaimSos = function() {
+      apiClaimSOS();
+    };
+
+    window.handleCompleteSos = function() {
+      if (confirm("Confirm handoff completion with OTP verification?")) {
+        apiCompleteSOS();
+      }
+    };
+
+    // 7. Vouch QR Modals
+    openVouchQrTrigger.addEventListener('click', () => vouchQrModal.classList.remove('hidden'));
+    closeVouchQrModal.addEventListener('click', () => vouchQrModal.classList.add('hidden'));
+    demoSimulateVouchBtn.addEventListener('click', () => {
+      vouchQrModal.classList.add('hidden');
+      apiVerifyResident(true);
+      alert("Neighbor Vouch Received from Flat 802! Your account is now fully Verified.");
+    });
+
+    // Tab switcher mock
+    document.querySelectorAll('.nav-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.nav-tab').forEach(t => {
+          t.classList.remove('active', 'text-indigo-600');
+          t.classList.add('text-[#777587]');
+          const icon = t.querySelector('.material-symbols-outlined');
+          if (icon) icon.style.fontVariationSettings = "'FILL' 0";
+        });
+        tab.classList.add('active', 'text-indigo-600');
+        tab.classList.remove('text-[#777587]');
+        const activeIcon = tab.querySelector('.material-symbols-outlined');
+        if (activeIcon) activeIcon.style.fontVariationSettings = "'FILL' 1";
+      });
+    });
+
+    // Initial Bootstrap
+    renderApp();
+  </script>
+</body></html>

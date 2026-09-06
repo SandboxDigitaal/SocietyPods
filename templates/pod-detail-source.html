@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Society Pods - Trust-Based Carpooling for Kids</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "inverse-primary": "#c3c0ff",
+            "background": "#f7f9fb",
+            "surface-container-low": "#f2f4f6",
+            "on-error": "#ffffff",
+            "surface-dim": "#d8dadc",
+            "surface-container": "#eceef0",
+            "surface-tint": "#4d44e3",
+            "on-primary-container": "#dad7ff",
+            "tertiary-fixed": "#ffddb8",
+            "tertiary-fixed-dim": "#ffb95f",
+            "on-primary": "#ffffff",
+            "primary-container": "#4f46e5",
+            "surface-container-high": "#e6e8ea",
+            "primary": "#3525cd",
+            "primary-fixed-dim": "#c3c0ff",
+            "tertiary-container": "#885500",
+            "surface": "#f7f9fb",
+            "outline": "#777587",
+            "on-secondary": "#ffffff",
+            "on-secondary-fixed": "#002113",
+            "on-tertiary-fixed-variant": "#653e00",
+            "on-tertiary": "#ffffff",
+            "surface-variant": "#e0e3e5",
+            "error-container": "#ffdad6",
+            "on-tertiary-container": "#ffd4a4",
+            "inverse-on-surface": "#eff1f3",
+            "outline-variant": "#c7c4d8",
+            "on-primary-fixed-variant": "#3323cc",
+            "primary-fixed": "#e2dfff",
+            "on-primary-fixed": "#0f0069",
+            "secondary-fixed-dim": "#4edea3",
+            "on-surface": "#191c1e",
+            "surface-container-highest": "#e0e3e5",
+            "inverse-surface": "#2d3133",
+            "surface-container-lowest": "#ffffff",
+            "secondary-container": "#6cf8bb",
+            "on-secondary-fixed-variant": "#005236",
+            "surface-bright": "#f7f9fb",
+            "secondary": "#006c49",
+            "tertiary": "#684000",
+            "on-secondary-container": "#00714d",
+            "error": "#ba1a1a",
+            "on-background": "#191c1e"
+          },
+          borderRadius: {
+            DEFAULT: "0.25rem",
+            lg: "0.5rem",
+            xl: "0.75rem",
+            full: "9999px"
+          },
+          spacing: {
+            "element-gap": "8px",
+            "gutter": "12px",
+            "card-padding": "16px",
+            "screen-margin": "16px"
+          },
+          fontFamily: {
+            body: ["Plus Jakarta Sans", "sans-serif"],
+            headline: ["Plus Jakarta Sans", "sans-serif"]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  </style>
+</head>
+<body class="bg-[#2d3133] text-[#191c1e] h-full flex justify-center items-center p-0 md:py-6">
+<!-- Mobile Frame Container -->
+<div class="w-full max-w-md h-full md:h-[844px] bg-[#f7f9fb] md:rounded-3xl shadow-2xl flex flex-col overflow-hidden relative border border-[#e0e3e5]">
+<!-- Top Header Bar -->
+<header class="flex items-center justify-between bg-white px-4 py-3 border-b border-[#e0e3e5] z-20 shrink-0" id="main-header">
+<div class="flex items-center gap-3">
+<button class="text-[#191c1e] p-1 rounded-lg hover:bg-[#f2f4f6] transition-colors" id="menu-btn">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div>
+<h1 class="text-base font-bold leading-tight text-[#191c1e]">Society Pods</h1>
+<p class="text-xs text-[#777587]" id="header-subtitle">Prestige Shantiniketan</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="bg-[#ba1a1a] text-white text-xs font-semibold px-2.5 py-1.5 rounded-full flex items-center gap-1 shadow-sm hover:bg-opacity-90 transition-all" id="sos-trigger-btn">
+<span class="material-symbols-outlined text-sm">emergency</span> SOS
+        </button>
+<button class="relative text-[#191c1e] p-2 rounded-lg hover:bg-[#f2f4f6] transition-colors" id="notifications-btn">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 bg-[#ba1a1a] rounded-full"></span>
+</button>
+</div>
+</header>
+<!-- App Main Content Area -->
+<main class="flex-1 overflow-y-auto relative flex flex-col pb-20" id="app-content">
+<!-- VIEW 1: Trust Gate / Onboarding Screen -->
+<section class="p-4 flex flex-col gap-6" id="view-onboarding">
+<div class="bg-gradient-to-r from-[#3525cd] to-[#4d44e3] text-white p-5 rounded-2xl shadow-md">
+<span class="bg-white/20 text-xs font-semibold px-2.5 py-1 rounded-full uppercase tracking-wider">Secure Access</span>
+<h2 class="text-xl font-bold mt-3">Verified Community Carpooling</h2>
+<p class="text-xs text-[#dad7ff] mt-1">Safely share school rides with verified parents in your residential society.</p>
+</div>
+<!-- Step 1: Phone & Society -->
+<div class="bg-white p-4 rounded-xl shadow-sm border border-[#e0e3e5] flex flex-col gap-4">
+<h3 class="text-sm font-bold text-[#191c1e] flex items-center gap-2">
+<span class="w-6 h-6 rounded-full bg-[#e2dfff] text-[#3525cd] flex items-center justify-center text-xs font-bold">1</span>
+            Mobile Verification &amp; Society
+          </h3>
+<div>
+<label class="text-xs font-medium text-[#464555] block mb-1">Phone Number</label>
+<div class="flex gap-2">
+<select class="bg-[#f2f4f6] border border-[#d8dadc] text-xs rounded-lg px-2 text-[#191c1e] focus:ring-2 focus:ring-[#3525cd]">
+<option>+91</option>
+<option>+1</option>
+</select>
+<input class="flex-1 bg-[#f2f4f6] border border-[#d8dadc] text-sm rounded-lg px-3 py-2 text-[#191c1e] focus:ring-2 focus:ring-[#3525cd]" id="phone-input" placeholder="98765 43210" type="tel"/>
+<button class="bg-[#3525cd] text-white text-xs font-semibold px-3 py-2 rounded-lg hover:bg-opacity-90" id="send-otp-btn">Get OTP</button>
+</div>
+</div>
+<div class="hidden flex flex-col gap-2" id="otp-container">
+<label class="text-xs font-medium text-[#464555]">Enter 6-digit OTP (try 123456)</label>
+<input class="bg-[#f2f4f6] border border-[#d8dadc] text-center tracking-widest text-lg rounded-lg px-3 py-2 text-[#191c1e] focus:ring-2 focus:ring-[#3525cd]" id="otp-input" maxlength="6" placeholder="• • • • • •" type="text"/>
+</div>
+<div>
+<label class="text-xs font-medium text-[#464555] block mb-1">Select Society</label>
+<select class="w-full bg-[#f2f4f6] border border-[#d8dadc] text-sm rounded-lg px-3 py-2 text-[#191c1e] focus:ring-2 focus:ring-[#3525cd]" id="society-select">
+<option value="Prestige Shantiniketan">Prestige Shantiniketan</option>
+<option value="Sobha Elan">Sobha Elan</option>
+<option value="DLF Phase 5">DLF Phase 5</option>
+</select>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<div>
+<label class="text-xs font-medium text-[#464555] block mb-1">Block / Tower</label>
+<input class="w-full bg-[#f2f4f6] border border-[#d8dadc] text-sm rounded-lg px-3 py-2 text-[#191c1e]" id="block-input" placeholder="e.g. Tower 7" type="text"/>
+</div>
+<div>
+<label class="text-xs font-medium text-[#464555] block mb-1">Flat Number</label>
+<input class="w-full bg-[#f2f4f6] border border-[#d8dadc] text-sm rounded-lg px-3 py-2 text-[#191c1e]" id="flat-input" placeholder="e.g. 1402" type="text"/>
+</div>
+</div>
+</div>
+<!-- Step 2: Trust Verification Methods -->
+<div class="bg-white p-4 rounded-xl shadow-sm border border-[#e0e3e5] flex flex-col gap-4">
+<h3 class="text-sm font-bold text-[#191c1e] flex items-center gap-2">
+<span class="w-6 h-6 rounded-full bg-[#e2dfff] text-[#3525cd] flex items-center justify-center text-xs font-bold">2</span>
+            Resident Trust Verification
+          </h3>
+<!-- Tabs for Verification -->
+<div class="flex bg-[#f2f4f6] p-1 rounded-lg">
+<button class="flex-1 text-xs font-semibold py-2 rounded-md bg-white text-[#3525cd] shadow-sm transition-all" id="tab-method-a">Neighbor Code</button>
+<button class="flex-1 text-xs font-semibold py-2 rounded-md text-[#777587] transition-all" id="tab-method-b">Work Email</button>
+</div>
+<!-- Method A Body -->
+<div class="flex flex-col gap-3" id="content-method-a">
+<p class="text-xs text-[#777587]">Enter an invite code provided by an existing verified neighbor in your society.</p>
+<div>
+<label class="text-xs font-medium text-[#464555] block mb-1">Neighbor Invite Code (Hint: TRUST-99)</label>
+<input class="w-full bg-[#f2f4f6] border border-[#d8dadc] uppercase text-sm rounded-lg px-3 py-2 text-[#191c1e]" id="invite-code-input" placeholder="TRUST-99" type="text"/>
+</div>
+<button class="flex items-center justify-center gap-2 border border-[#3525cd] text-[#3525cd] text-xs font-semibold py-2.5 rounded-lg hover:bg-[#e2dfff]/20 transition-colors" id="scan-qr-vouch-btn">
+<span class="material-symbols-outlined text-sm">qr_code_scanner</span> Scan Neighbor QR Vouch
+            </button>
+</div>
+<!-- Method B Body -->
+<div class="hidden flex flex-col gap-3" id="content-method-b">
+<p class="text-xs text-[#777587]">Verify instantly using corporate email domains (@google.com, @microsoft.com, @tcs.com).</p>
+<div>
+<label class="text-xs font-medium text-[#464555] block mb-1">Corporate Work Email</label>
+<input class="w-full bg-[#f2f4f6] border border-[#d8dadc] text-sm rounded-lg px-3 py-2 text-[#191c1e]" id="work-email-input" placeholder="name@microsoft.com" type="email"/>
+</div>
+</div>
+</div>
+<!-- Submit Onboarding Action -->
+<button class="w-full bg-[#3525cd] text-white text-sm font-bold py-3.5 rounded-xl shadow-md hover:bg-opacity-90 transition-all flex items-center justify-center gap-2" id="submit-onboarding-btn">
+          Verify &amp; Enter Pods <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+<button class="text-xs text-center text-[#777587] underline hover:text-[#3525cd]" id="bypass-demo-btn">
+          [Demo Shortcut: Toggle Verified Resident State]
+        </button>
+</section>
+<!-- VIEW 2: Pod Dashboard (Verified vs Pending States) -->
+<section class="hidden p-4 flex flex-col gap-4" id="view-dashboard">
+<!-- Pending State Banner (Toggleable) -->
+<div class="hidden bg-[#ffb95f]/20 border border-[#ffb95f] p-4 rounded-xl flex items-start gap-3" id="pending-vouch-banner">
+<span class="material-symbols-outlined text-[#885500] text-xl mt-0.5">hourglass_top</span>
+<div class="flex-1">
+<h4 class="text-xs font-bold text-[#885500]">Pending Neighbor Vouch</h4>
+<p class="text-xs text-[#653e00] mt-0.5">Your profile is awaiting confirmation from Tower 7 neighbours. You can request a reminder or scan QR.</p>
+<div class="flex gap-2 mt-3">
+<button class="bg-[#885500] text-white text-xs font-semibold px-3 py-1.5 rounded-lg" id="resend-vouch-btn">Resend Code</button>
+<button class="bg-white border border-[#885500] text-[#885500] text-xs font-semibold px-3 py-1.5 rounded-lg" id="show-vouch-qr-btn">Show QR</button>
+</div>
+</div>
+</div>
+<!-- Verified Resident Active Pod Card -->
+<div class="bg-white rounded-2xl p-4 shadow-sm border border-[#e0e3e5] flex flex-col gap-3">
+<div class="flex justify-between items-start">
+<div>
+<span class="bg-[#006c49]/10 text-[#006c49] text-xs font-semibold px-2 py-0.5 rounded-md inline-flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-[#006c49] animate-pulse"></span> Active Pod • En Route
+              </span>
+<h3 class="text-lg font-bold text-[#191c1e] mt-1">Morning Champions Pod</h3>
+<p class="text-xs text-[#777587]">Scheduled Pickup: <span class="font-semibold text-[#191c1e]">08:15 AM</span> Today</p>
+</div>
+<button class="text-[#3525cd] bg-[#e2dfff] p-2 rounded-xl text-xs font-semibold hover:bg-opacity-80" id="view-pod-details-btn">
+              Details
+            </button>
+</div>
+<!-- Driver & Kids Meta -->
+<div class="bg-[#f7f9fb] p-3 rounded-xl flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-[#3525cd] text-white flex items-center justify-center font-bold text-sm">PM</div>
+<div>
+<p class="text-xs font-bold text-[#191c1e]">Priya M. <span class="text-[10px] text-[#006c49] font-normal">(Verified Parent)</span></p>
+<p class="text-[11px] text-[#777587]">Honda Civic • KA-03-MZ-9912</p>
+</div>
+</div>
+<div class="text-right">
+<span class="text-xs font-bold text-[#3525cd]">Driver Today</span>
+</div>
+</div>
+<!-- Kids List -->
+<div class="flex items-center justify-between px-1">
+<span class="text-xs font-medium text-[#777587]">Children in Pod:</span>
+<div class="flex -space-x-2">
+<div class="w-7 h-7 rounded-full bg-[#e2dfff] text-[#3525cd] text-xs font-bold flex items-center justify-center border-2 border-white" title="Aarav">A</div>
+<div class="w-7 h-7 rounded-full bg-[#ffddb8] text-[#885500] text-xs font-bold flex items-center justify-center border-2 border-white" title="Maya">M</div>
+<div class="w-7 h-7 rounded-full bg-[#6cf8bb]/30 text-[#006c49] text-xs font-bold flex items-center justify-center border-2 border-white" title="Rohan">R</div>
+</div>
+</div>
+</div>
+<!-- Live Map Tracker Simulation Card -->
+<div class="bg-white rounded-2xl p-4 shadow-sm border border-[#e0e3e5] flex flex-col gap-3">
+<div class="flex justify-between items-center">
+<h4 class="text-sm font-bold text-[#191c1e] flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[#3525cd] text-base">near_me</span> Live Pod Tracker
+            </h4>
+<span class="text-xs text-[#006c49] font-semibold bg-[#006c49]/10 px-2 py-0.5 rounded">ETA 4 mins</span>
+</div>
+<!-- Simulated Map Canvas / Container -->
+<div class="w-full h-44 rounded-xl relative overflow-hidden bg-[#e2dfff] border border-[#c3c0ff]" data-location="Prestige Shantiniketan Bangalore" style="">
+<div class="absolute inset-0 bg-cover bg-center opacity-80" data-alt="A detailed aerial map illustration of a modern residential gated community in Bangalore with neatly arranged apartment towers, green parks, internal asphalt roads, and a highlighted blue carpooling route with a glowing pin indicating active transit mode." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBhk5_uYloH4d0S_x01g9zSXdnJ4wOHg9JhzOE5FrPMt51QjPb9gfkcMV8k9p5nI1IOLkrJ1wkt5z5E8bZVleljlBIy-O9OkkeEbFtVhuSl0boRG0nt3Cuc4snQOWTvMVfOcLiZb6zZ5AEuDjQge9lS_971OkaG8ImJnNJl4Ngd7VZdsVPq7SlX80i3e-X63ve7UfxObkRsCuJZYQlc14aupTd5QnoftToVecuKm-Zqm45uXf2ciHkZ')"></div>
+<!-- Map Overlay UI elements -->
+<div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent flex flex-col justify-between p-3">
+<div class="self-end bg-white/90 backdrop-blur-sm px-2 py-1 rounded-md text-[10px] font-bold text-[#191c1e] shadow">
+                GPS Secure 5G
+              </div>
+<div class="flex items-center justify-between bg-white/90 backdrop-blur-sm p-2 rounded-xl shadow">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-[#3525cd] text-white flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">directions_car</span>
+</div>
+<div>
+<p class="text-xs font-bold text-[#191c1e]">Near Tower 4 Gate</p>
+<p class="text-[10px] text-[#777587]">Moving at 24 km/h • Speed Normal</p>
+</div>
+</div>
+<button class="p-1.5 text-[#3525cd] hover:bg-[#e2dfff] rounded-lg" id="refresh-map-btn">
+<span class="material-symbols-outlined text-sm">refresh</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Quick Actions & Schedule Snippet -->
+<div class="grid grid-cols-2 gap-3">
+<button class="bg-white p-3.5 rounded-xl border border-[#e0e3e5] shadow-sm flex flex-col items-center text-center gap-2 hover:border-[#3525cd] transition-all" id="open-create-pod-modal">
+<div class="w-10 h-10 rounded-full bg-[#e2dfff] text-[#3525cd] flex items-center justify-center">
+<span class="material-symbols-outlined">group_add</span>
+</div>
+<div>
+<p class="text-xs font-bold text-[#191c1e]">Create / Request Pod</p>
+<p class="text-[10px] text-[#777587]">Setup school carpool</p>
+</div>
+</button>
+<button class="bg-white p-3.5 rounded-xl border border-[#e0e3e5] shadow-sm flex flex-col items-center text-center gap-2 hover:border-[#006c49] transition-all" id="open-qr-verify-modal">
+<div class="w-10 h-10 rounded-full bg-[#6cf8bb]/30 text-[#006c49] flex items-center justify-center">
+<span class="material-symbols-outlined">qr_code_2</span>
+</div>
+<div>
+<p class="text-xs font-bold text-[#191c1e]">Drop-off PIN / QR</p>
+<p class="text-[10px] text-[#777587]">Secure handoff code</p>
+</div>
+</button>
+</div>
+<!-- Today's Schedule List -->
+<div class="bg-white rounded-2xl p-4 shadow-sm border border-[#e0e3e5] flex flex-col gap-3">
+<div class="flex justify-between items-center">
+<h4 class="text-sm font-bold text-[#191c1e]">Today's Schedule</h4>
+<span class="text-xs font-medium text-[#3525cd]">2 Rides Today</span>
+</div>
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between p-3 rounded-xl bg-[#f7f9fb] border border-[#e0e3e5]">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-[#006c49]/20 text-[#006c49] flex items-center justify-center font-bold text-xs">AM</div>
+<div>
+<p class="text-xs font-bold text-[#191c1e]">Morning School Drop</p>
+<p class="text-[10px] text-[#777587]">08:15 AM • Priya M. (Driver)</p>
+</div>
+</div>
+<span class="text-[10px] font-semibold bg-[#006c49]/10 text-[#006c49] px-2 py-1 rounded">Completed</span>
+</div>
+<div class="flex items-center justify-between p-3 rounded-xl bg-[#f7f9fb] border border-[#e0e3e5]">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-[#3525cd]/20 text-[#3525cd] flex items-center justify-center font-bold text-xs">PM</div>
+<div>
+<p class="text-xs font-bold text-[#191c1e]">Evening Return Pickup</p>
+<p class="text-[10px] text-[#777587]">03:30 PM • Rajesh K. (Driver)</p>
+</div>
+</div>
+<span class="text-[10px] font-semibold bg-[#ffddb8] text-[#885500] px-2 py-1 rounded">Upcoming</span>
+</div>
+</div>
+</div>
+</section>
+<!-- VIEW 3: My Pods Tab View -->
+<section class="hidden p-4 flex flex-col gap-4" id="view-pods">
+<div class="flex justify-between items-center">
+<h2 class="text-lg font-bold text-[#191c1e]">My Society Pods</h2>
+<button class="bg-[#3525cd] text-white text-xs font-semibold px-3 py-1.5 rounded-lg">New Pod</button>
+</div>
+<div class="bg-white rounded-xl p-4 border border-[#e0e3e5] shadow-sm flex flex-col gap-3">
+<div class="flex justify-between">
+<h3 class="text-sm font-bold text-[#191c1e]">Morning Champions Pod</h3>
+<span class="text-xs bg-[#006c49]/10 text-[#006c49] px-2 py-0.5 rounded font-semibold">Active</span>
+</div>
+<p class="text-xs text-[#777587]">School: Inventure Academy • 4 Kids • 3 Parents Rotated</p>
+<div class="border-t border-[#e0e3e5] pt-3 flex justify-between items-center">
+<span class="text-xs font-medium text-[#464555]">Next Duty: Tomorrow, 8:00 AM</span>
+<button class="text-xs text-[#3525cd] font-bold">Manage Pod →</button>
+</div>
+</div>
+<div class="bg-white rounded-xl p-4 border border-[#e0e3e5] shadow-sm flex flex-col gap-3">
+<div class="flex justify-between">
+<h3 class="text-sm font-bold text-[#191c1e]">Evening Music Class Carpool</h3>
+<span class="text-xs bg-[#e2dfff] text-[#3525cd] px-2 py-0.5 rounded font-semibold">Forming</span>
+</div>
+<p class="text-xs text-[#777587]">Location: Yamaha Music Studio • 2 of 4 Seats Filled</p>
+<div class="border-t border-[#e0e3e5] pt-3 flex justify-between items-center">
+<span class="text-xs font-medium text-[#464555]">Needs 1 more parent</span>
+<button class="text-xs text-[#3525cd] font-bold">View Details →</button>
+</div>
+</div>
+</section>
+<!-- VIEW 4: Schedule Tab View -->
+<section class="hidden p-4 flex flex-col gap-4" id="view-schedule">
+<h2 class="text-lg font-bold text-[#191c1e]">Weekly Pod Schedule</h2>
+<div class="bg-white rounded-xl p-4 border border-[#e0e3e5] shadow-sm flex flex-col gap-3">
+<div class="flex justify-between items-center border-b border-[#e0e3e5] pb-2">
+<span class="text-xs font-bold text-[#3525cd]">Monday, Oct 24</span>
+<span class="text-xs text-[#006c49] font-semibold">All Rides Confirmed</span>
+</div>
+<div class="text-xs text-[#777587] flex flex-col gap-2">
+<p>• 08:15 AM - Drop by Priya M. <span class="text-[#006c49] font-bold">Done</span></p>
+<p>• 03:30 PM - Return by Rajesh K. <span class="text-[#885500] font-bold">Pending</span></p>
+</div>
+</div>
+<div class="bg-white rounded-xl p-4 border border-[#e0e3e5] shadow-sm flex flex-col gap-3">
+<div class="flex justify-between items-center border-b border-[#e0e3e5] pb-2">
+<span class="text-xs font-bold text-[#191c1e]">Tuesday, Oct 25</span>
+<span class="text-xs text-[#885500] font-semibold">Driver Swap Needed</span>
+</div>
+<div class="text-xs text-[#777587] flex flex-col gap-2">
+<p>• 08:15 AM - Drop by You (Parent Duty)</p>
+<p>• 03:30 PM - Return by Anita S.</p>
+</div>
+</div>
+</section>
+<!-- VIEW 5: Profile Tab View -->
+<section class="hidden p-4 flex flex-col gap-4" id="view-profile">
+<div class="bg-white rounded-xl p-4 border border-[#e0e3e5] shadow-sm flex items-center gap-4">
+<div class="w-14 h-14 rounded-full bg-[#3525cd] text-white flex items-center justify-center font-bold text-lg">VK</div>
+<div>
+<h3 class="text-base font-bold text-[#191c1e]">Vikram Kapoor</h3>
+<p class="text-xs text-[#777587]">Prestige Shantiniketan • Tower 7, 1402</p>
+<span class="inline-block mt-1 text-[10px] bg-[#006c49]/10 text-[#006c49] font-semibold px-2 py-0.5 rounded">Verified Resident</span>
+</div>
+</div>
+<div class="bg-white rounded-xl p-4 border border-[#e0e3e5] shadow-sm flex flex-col gap-2">
+<h4 class="text-xs font-bold text-[#777587] uppercase">Children Profiles</h4>
+<div class="flex items-center justify-between py-2 border-b border-[#e0e3e5]">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-[#e2dfff] text-[#3525cd] flex items-center justify-center font-bold text-xs">A</div>
+<div>
+<p class="text-xs font-bold text-[#191c1e]">Aarav Kapoor (Age 8)</p>
+<p class="text-[10px] text-[#777587]">Inventure Academy • Grade 3</p>
+</div>
+</div>
+<span class="text-xs text-[#3525cd] font-semibold">Edit</span>
+</div>
+</div>
+<button class="w-full bg-[#ba1a1a]/10 text-[#ba1a1a] text-xs font-bold py-3 rounded-xl hover:bg-[#ba1a1a]/20 transition-colors" id="logout-btn">
+          Log Out / Reset Demo State
+        </button>
+</section>
+</main>
+<!-- Bottom Navigation Bar (Shown on Dashboard / Destination views) -->
+<nav class="hidden absolute bottom-0 left-0 right-0 bg-white border-t border-[#e0e3e5] px-4 py-2 flex justify-between items-center z-20" id="bottom-nav">
+<button class="nav-item flex-1 flex flex-col items-center gap-1 text-[#3525cd]" data-tab="dashboard">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="text-[10px] font-semibold">Dashboard</span>
+</button>
+<button class="nav-item flex-1 flex flex-col items-center gap-1 text-[#777587]" data-tab="pods">
+<span class="material-symbols-outlined">groups</span>
+<span class="text-[10px] font-semibold">My Pods</span>
+</button>
+<button class="nav-item flex-1 flex flex-col items-center gap-1 text-[#777587]" data-tab="schedule">
+<span class="material-symbols-outlined">calendar_month</span>
+<span class="text-[10px] font-semibold">Schedule</span>
+</button>
+<button class="nav-item flex-1 flex flex-col items-center gap-1 text-[#777587]" data-tab="profile">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-semibold">Profile</span>
+</button>
+</nav>
+<!-- MODAL 1: SOS Emergency Trigger Modal -->
+<div class="hidden absolute inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" id="sos-modal">
+<div class="bg-white w-full max-w-xs rounded-2xl p-5 shadow-2xl flex flex-col items-center text-center gap-4 border-2 border-[#ba1a1a]">
+<div class="w-14 h-14 rounded-full bg-[#ba1a1a]/20 text-[#ba1a1a] flex items-center justify-center animate-bounce">
+<span class="material-symbols-outlined text-3xl">emergency</span>
+</div>
+<div>
+<h3 class="text-base font-bold text-[#ba1a1a]">Emergency SOS Triggered</h3>
+<p class="text-xs text-[#777587] mt-1">Broadcasting alert to all society pod residents and security desk in <strong><span id="sos-countdown">5</span>s</strong>.</p>
+</div>
+<div class="w-full flex flex-col gap-2">
+<button class="w-full bg-[#191c1e] text-white text-xs font-bold py-3 rounded-xl" id="cancel-sos-btn">Cancel SOS (Safe)</button>
+<button class="w-full bg-[#ba1a1a] text-white text-xs font-bold py-3 rounded-xl" id="confirm-sos-btn">Broadcast Immediately</button>
+</div>
+</div>
+</div>
+<!-- MODAL 2: Create New Pod / Request Ride Modal -->
+<div class="hidden absolute inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-end justify-center" id="create-pod-modal">
+<div class="bg-white w-full rounded-t-3xl p-5 shadow-2xl flex flex-col gap-4 max-h-[85vh] overflow-y-auto">
+<div class="flex justify-between items-center border-b border-[#e0e3e5] pb-3">
+<h3 class="text-base font-bold text-[#191c1e]">Create New Society Pod</h3>
+<button class="text-[#777587] p-1" id="close-create-pod-modal"><span class="material-symbols-outlined">close</span></button>
+</div>
+<div class="flex flex-col gap-3">
+<div>
+<label class="text-xs font-medium text-[#464555] block mb-1">Pod Name</label>
+<input class="w-full bg-[#f2f4f6] border border-[#d8dadc] text-xs rounded-lg px-3 py-2" placeholder="e.g. Evening Football Carpool" type="text"/>
+</div>
+<div>
+<label class="text-xs font-medium text-[#464555] block mb-1">Destination / School</label>
+<input class="w-full bg-[#f2f4f6] border border-[#d8dadc] text-xs rounded-lg px-3 py-2" placeholder="Inventure Academy" type="text"/>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<div>
+<label class="text-xs font-medium text-[#464555] block mb-1">Pickup Time</label>
+<input class="w-full bg-[#f2f4f6] border border-[#d8dadc] text-xs rounded-lg px-3 py-2" type="time" value="08:00"/>
+</div>
+<div>
+<label class="text-xs font-medium text-[#464555] block mb-1">Max Kids</label>
+<input class="w-full bg-[#f2f4f6] border border-[#d8dadc] text-xs rounded-lg px-3 py-2" type="number" value="4"/>
+</div>
+</div>
+<button class="w-full bg-[#3525cd] text-white text-xs font-bold py-3 rounded-xl mt-2" id="submit-new-pod-btn">Publish Pod to Society</button>
+</div>
+</div>
+</div>
+<!-- MODAL 3: Resident Vouch / QR Code Verification Modal -->
+<div class="hidden absolute inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" id="qr-modal">
+<div class="bg-white w-full max-w-xs rounded-2xl p-5 shadow-2xl flex flex-col items-center text-center gap-4">
+<div class="flex justify-between w-full items-center">
+<h3 class="text-sm font-bold text-[#191c1e]">Resident Vouch QR &amp; PIN</h3>
+<button class="text-[#777587] p-1" id="close-qr-modal"><span class="material-symbols-outlined">close</span></button>
+</div>
+<div class="w-40 h-40 bg-[#f2f4f6] border-2 border-dashed border-[#3525cd] rounded-xl flex flex-col items-center justify-center p-2">
+<span class="material-symbols-outlined text-5xl text-[#3525cd]">qr_code_2</span>
+<p class="text-[10px] text-[#777587] mt-2">Scan with neighbour app to vouch</p>
+</div>
+<div>
+<p class="text-xs text-[#777587]">Or share Secure Drop PIN:</p>
+<p class="text-xl font-bold tracking-widest text-[#3525cd] mt-1">4892-OK</p>
+</div>
+<button class="w-full bg-[#3525cd] text-white text-xs font-bold py-2.5 rounded-xl" id="done-qr-modal">Close</button>
+</div>
+</div>
+</div>
+<!-- Frontend State Management & Interactions Script -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Application State
+      let state = {
+        is_verified_resident: false,
+        pending_vouch: true,
+        current_view: 'onboarding', // onboarding, dashboard, pods, schedule, profile
+        verification_method: 'a' // a or b
+      };
+
+      // DOM Elements
+      const viewOnboarding = document.getElementById('view-onboarding');
+      const viewDashboard = document.getElementById('view-dashboard');
+      const viewPods = document.getElementById('view-pods');
+      const viewSchedule = document.getElementById('view-schedule');
+      const viewProfile = document.getElementById('view-profile');
+      const bottomNav = document.getElementById('bottom-nav');
+      const mainHeader = document.getElementById('main-header');
+      const headerSubtitle = document.getElementById('header-subtitle');
+
+      // Onboarding inputs & buttons
+      const sendOtpBtn = document.getElementById('send-otp-btn');
+      const otpContainer = document.getElementById('otp-container');
+      const otpInput = document.getElementById('otp-input');
+      const tabMethodA = document.getElementById('tab-method-a');
+      const tabMethodB = document.getElementById('tab-method-b');
+      const contentMethodA = document.getElementById('content-method-a');
+      const contentMethodB = document.getElementById('content-method-b');
+      const submitOnboardingBtn = document.getElementById('submit-onboarding-btn');
+      const bypassDemoBtn = document.getElementById('bypass-demo-btn');
+      const inviteCodeInput = document.getElementById('invite-code-input');
+      const workEmailInput = document.getElementById('work-email-input');
+
+      // Banners & Modals
+      const pendingVouchBanner = document.getElementById('pending-vouch-banner');
+      const sosTriggerBtn = document.getElementById('sos-trigger-btn');
+      const sosModal = document.getElementById('sos-modal');
+      const cancelSosBtn = document.getElementById('cancel-sos-btn');
+      const confirmSosBtn = document.getElementById('confirm-sos-btn');
+      const sosCountdown = document.getElementById('sos-countdown');
+      
+      const createPodModal = document.getElementById('create-pod-modal');
+      const openCreatePodModalBtn = document.getElementById('open-create-pod-modal');
+      const closeCreatePodModalBtn = document.getElementById('close-create-pod-modal');
+      const submitNewPodBtn = document.getElementById('submit-new-pod-btn');
+
+      const qrModal = document.getElementById('qr-modal');
+      const openQrVerifyModalBtn = document.getElementById('open-qr-verify-modal');
+      const closeQrModalBtn = document.getElementById('close-qr-modal');
+      const doneQrModalBtn = document.getElementById('done-qr-modal');
+      const showVouchQrBtn = document.getElementById('show-vouch-qr-btn');
+      const logoutBtn = document.getElementById('logout-btn');
+
+      let sosTimer = null;
+      let countdownVal = 5;
+
+      // Render View function based on state
+      function render() {
+        // Hide all views
+        viewOnboarding.classList.add('hidden');
+        viewDashboard.classList.add('hidden');
+        viewPods.classList.add('hidden');
+        viewSchedule.classList.add('hidden');
+        viewProfile.classList.add('hidden');
+        bottomNav.classList.add('hidden');
+
+        if (!state.is_verified_resident) {
+          viewOnboarding.classList.remove('hidden');
+          headerSubtitle.textContent = "Secure Onboarding";
+        } else {
+          bottomNav.classList.remove('hidden');
+          if (state.current_view === 'dashboard') {
+            viewDashboard.classList.remove('hidden');
+            headerSubtitle.textContent = document.getElementById('society-select').value || "Prestige Shantiniketan";
+          } else if (state.current_view === 'pods') {
+            viewPods.classList.remove('hidden');
+            headerSubtitle.textContent = "My Society Pods";
+          } else if (state.current_view === 'schedule') {
+            viewSchedule.classList.remove('hidden');
+            headerSubtitle.textContent = "Carpool Schedule";
+          } else if (state.current_view === 'profile') {
+            viewProfile.classList.remove('hidden');
+            headerSubtitle.textContent = "Parent Profile";
+          }
+
+          if (state.pending_vouch) {
+            pendingVouchBanner.classList.remove('hidden');
+          } else {
+            pendingVouchBanner.classList.add('hidden');
+          }
+        }
+      }
+
+      // OTP Send mock
+      sendOtpBtn.addEventListener('click', () => {
+        otpContainer.classList.remove('hidden');
+        otpInput.value = "123456";
+        sendOtpBtn.textContent = "Resend";
+      });
+
+      // Verification Method Toggles
+      tabMethodA.addEventListener('click', () => {
+        state.verification_method = 'a';
+        tabMethodA.className = "flex-1 text-xs font-semibold py-2 rounded-md bg-white text-[#3525cd] shadow-sm transition-all";
+        tabMethodB.className = "flex-1 text-xs font-semibold py-2 rounded-md text-[#777587] transition-all";
+        contentMethodA.classList.remove('hidden');
+        contentMethodB.classList.add('hidden');
+      });
+
+      tabMethodB.addEventListener('click', () => {
+        state.verification_method = 'b';
+        tabMethodB.className = "flex-1 text-xs font-semibold py-2 rounded-md bg-white text-[#3525cd] shadow-sm transition-all";
+        tabMethodA.className = "flex-1 text-xs font-semibold py-2 rounded-md text-[#777587] transition-all";
+        contentMethodB.classList.remove('hidden');
+        contentMethodA.classList.add('hidden');
+      });
+
+      // Submit Onboarding
+      submitOnboardingBtn.addEventListener('click', () => {
+        const inviteCode = inviteCodeInput.value.trim();
+        const workEmail = workEmailInput.value.trim();
+
+        if (state.verification_method === 'a' && inviteCode === "TRUST-99") {
+          state.pending_vouch = false;
+        } else if (state.verification_method === 'b' && (workEmail.endsWith('@google.com') || workEmail.endsWith('@microsoft.com') || workEmail.endsWith('@tcs.com'))) {
+          state.pending_vouch = false;
+        } else {
+          state.pending_vouch = true; // Pending neighbor vouch state
+        }
+
+        state.is_verified_resident = true;
+        state.current_view = 'dashboard';
+        render();
+      });
+
+      bypassDemoBtn.addEventListener('click', () => {
+        state.is_verified_resident = true;
+        state.pending_vouch = false;
+        state.current_view = 'dashboard';
+        render();
+      });
+
+      // Bottom Nav Item Clicks
+      document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+          const tab = item.getAttribute('data-tab');
+          state.current_view = tab;
+          
+          // Update active styles on bottom nav
+          document.querySelectorAll('.nav-item').forEach(nav => {
+            nav.classList.remove('text-[#3525cd]');
+            nav.classList.add('text-[#777587]');
+            const span = nav.querySelector('.material-symbols-outlined');
+            if (span) span.style.fontVariationSettings = "'FILL' 0";
+          });
+          item.classList.remove('text-[#777587]');
+          item.classList.add('text-[#3525cd]');
+          const activeSpan = item.querySelector('.material-symbols-outlined');
+          if (activeSpan) activeSpan.style.fontVariationSettings = "'FILL' 1";
+
+          render();
+        });
+      });
+
+      // SOS Modal Interaction
+      sosTriggerBtn.addEventListener('click', () => {
+        sosModal.classList.remove('hidden');
+        countdownVal = 5;
+        sosCountdown.textContent = countdownVal;
+        sosTimer = setInterval(() => {
+          countdownVal--;
+          sosCountdown.textContent = countdownVal;
+          if (countdownVal <= 0) {
+            clearInterval(sosTimer);
+            alert('SOS Emergency Broadcasted to Society Security & Pod Parents!');
+            sosModal.classList.add('hidden');
+          }
+        }, 1000);
+      });
+
+      cancelSosBtn.addEventListener('click', () => {
+        clearInterval(sosTimer);
+        sosModal.classList.add('hidden');
+      });
+
+      confirmSosBtn.addEventListener('click', () => {
+        clearInterval(sosTimer);
+        alert('Emergency SOS Signal Sent Successfully!');
+        sosModal.classList.add('hidden');
+      });
+
+      // Create Pod Modal
+      openCreatePodModalBtn.addEventListener('click', () => createPodModal.classList.remove('hidden'));
+      closeCreatePodModalBtn.addEventListener('click', () => createPodModal.classList.add('hidden'));
+      submitNewPodBtn.addEventListener('click', () => {
+        alert('New Pod successfully published to society board!');
+        createPodModal.classList.add('hidden');
+      });
+
+      // QR Modal
+      openQrVerifyModalBtn.addEventListener('click', () => qrModal.classList.remove('hidden'));
+      showVouchQrBtn.addEventListener('click', () => qrModal.classList.remove('hidden'));
+      closeQrModalBtn.addEventListener('click', () => qrModal.classList.add('hidden'));
+      doneQrModalBtn.addEventListener('click', () => qrModal.classList.add('hidden'));
+
+      // Logout
+      logoutBtn.addEventListener('click', () => {
+        state.is_verified_resident = false;
+        state.current_view = 'onboarding';
+        render();
+      });
+
+      // Initial Render
+      render();
+    });
+  </script>
+</body></html>
